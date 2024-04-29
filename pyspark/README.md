@@ -1,9 +1,15 @@
 # Difference between Spark and Hadoop Map Reduce
-# Spark
-Spark is an open source analytics engine that is used for fast data processing using distributed architecture.
+## Spark
+Spark is an open source analytics engine that is used for fast data processing using a distributed architecture.
 The high speed data processing in Spark is attributed to the in-memory processing of data as opposed to Map Reduce.
 Spark can be used for both batch processing and real-time stream processing, as opposed to Hadoop Map Reduce that is useful for batch processing only.
 Even though Spark is faster, it should be kept in mind that Spark usage can be costly as it requires higher memory. The higher the memory the better the processing speed.
+
 ![image](https://github.com/natsu1628/practice/assets/10547154/e9a1e93a-ba3c-4428-bebc-38a5cdeb902f)
 
-Spark follows the above archiitecture.
+Spark follows the above architecture. Here the spark context or the driver contains several schedulers and coordinates the whole process run on independent processes. It contains DAG scheduler, Task scheduler, Backend scheduler, and block managers which are responsible for user code translation to specific jobs. Resource allocation across various worker nodes are done by the cluster manager. The cluster manager can be a spark standalone cluster, Kubernetes, Mesos, or YARN.
+Once the job is split into multiple smaller tasks, each worker node is assigned a task to complete. Once the task is complete, they return the output to the spark context. To increase the performance of the system, the number of worker nodes can be increased which will increase the parallelism of the job. Spark first adds the data to the memory and then starts the process. The data generated during the intermediate steps are stored in memory instead of disk (like in Hadoop), thus reducing the time needed to access the intermediate data for further processing. Since the time taken to access any data in memory (RAM) is significantly less than that of disk access, the data processing speed of Spark increases. But this also increases the risk of OOM (Out Of Memory) if the configuration is not done properly. Spark has the option to use only Only Memory, Memory + Disk, or Only Disk for its processing, with the processing speed decreasing in the same order.
+The worker nodes in Spark are independent of each other and do not share any memory. If any data needs to be accessed by all the worker nodes, then that data can be broadcasted to all worker nodes. This will make sure that a copy of the same data is kept in all worker nodes so that processing can happen.
+
+## Hadoop Map Reduce
+Hadoop Map Reduce uses the Map Reduce concept. Here the distributed system parallelizes the data processing in two phases. In the first phase, the mapper processes the data and produces several chunks of the data for processing. It uses the data stored in HDFS (Hadoop File Storage System), which is a distributed file storage system. The second stage is the reducer stage where the shuffling and reduction process happens. Once the data is processed, data with the same key are shuffled to be kept in the same block and then sorted. Once this procedure is complete, the reducer combines all the data from each shuffled block of data and store it back in HDFS. h]Here each intermediate stage stores their data in the disk, thus making it slow and incompatible with real-time processing. It is however suitable for batch processing where the time is not a crucial feature. For time-sensitive data, Hadoop may not be a good approach and Spark can be used for the processing. However, the usage of disk greatly reduces the cost of using Hadoop.
