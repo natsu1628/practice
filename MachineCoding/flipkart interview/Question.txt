@@ -1,0 +1,69 @@
+Interviewer Allocation System
+
+Description:
+Your task is to build a simple Interviewer Allocation System for HRs (Human Resources) to efficiently allocate interviewers to interviewees for job interviews. The system should help HRs manage the interview process smoothly by ensuring fair distribution of interviewers and optimizing their availability.
+
+Features:
+1. Register Interviewers: HRs can register interviewers with their names, All types of interviews he prefers to take(Consider 2 types as of now Machine Coding and PSDS), years of experience and availability over slots.
+2. Register Interviewees: HRs can register interviewees with their names, and preferred interview time slots. (Consider slots as number from 1 to 8)
+3. Every Interviewee has to go through 2 rounds Machine Coding and PSDS (order doesn't matter)
+4. Allocate Interviewers: The system should automatically allocate interviewers to interviewees based on interview type and availability. Ensure that same interviewer is not assigned both Machine Coding and PSDS for a certain interviewee. This would be the Default Allocation strategy.
+7. View Interview Schedule: HRs should be able to view the interview schedule, showing which interviewers are assigned to which interviewees and the respective time slots.
+
+Requirements:
+1 - RegisterInterviewer()
+2 - RegisterInterviewee()
+3 - HR should be able to Allocate()
+4 - View Interview Schedule.()
+
+
+
+Test Case 1:
+registerInterviewer(‘Interviewer1’, [‘MC’, ‘PSDS’], 7,  [ 1, 2, 3, 4])
+registerInterviewer(‘Interviewer2’, [MC’, ‘PSDS’’], 6,  [1, 2, 3, 4])
+registerInterviewee(‘Candidate1’, [1, 2, 3, 7, 8])
+registerInterviewee(‘Candidate2’, [1, 2, 3, 7, 8])
+registerInterviewee(‘Candidate3’, [8])
+
+Show Allocations 
+
+‘Candidate1’ , MC, ‘Interviewer1’, 1
+‘Candidate1’, PSDS, ‘Interviewer2’, 2
+		‘Candidate2’, MC, ‘Interviewer1’, 2
+		‘Candidate2’, PSDS, ‘Interviewer2’, 1
+		Cannot Allocate PSDS for Candidate3
+		Cannot Allocate MC for Candidate3
+Test Case 2:
+registerInterviewer(‘Interviewer1’, [‘MC’, ‘PSDS’], 7, [1, 2, 3, 4])
+registerInterviewer(‘Interviewer2’, [MC’, ‘PSDS’’], 6, [2, 3, 4]) (<-changed from 1st test case)
+registerInterviewee(‘Candidate1’, [1, 2, 3, 7, 8])
+registerInterviewee(‘Candidate2’, [1, 2, 3, 7, 8])
+		
+Show Allocations 
+‘Candidate1’, MC, ‘Interviewer1’, 1
+‘Candidate1’, PSDS, ‘Interviewer2’, 2
+		‘Candidate2’, MC,‘Interviewer1’, 3,
+		‘Candidate2’, PSDS Not possible
+
+Note - This is one possible set of values, there can be other values depending on how you 
+	Start assigning.
+
+Bonus:
+1 - While allocating, prefer to distribute in a fair share manner so that all the interviewers are allocated fairly well instead of few being heavily loaded. Example do the next assignment to the interviewer with the least assignment till then. This would be an extension of the existing allocation strategy.
+
+Things to take care:
+Don’t use any Database or NOSQL for this.
+Expected Time is 90 Mins.
+Do Not create any UI for the application.
+Write a driver class for demo which takes the inputs and executes the commands in one place and include test cases.
+Please prioritize code compilation, execution and completion.
+ Code should be modular, with Object-Oriented design. Maintain good separation of concerns
+ Code should be extensible. It should be easy to add/remove functionality without rewriting the entire codebase.
+8. Code should handle edge cases properly and fail gracefully.
+9. Code should be readable. Follow good coding practices: use intuitive variable names, function names, class names, etc. and indent code properly.
+10. Concurrent handling is not needed, also not expected to solve using algorithms and can simply go for brute force approach.
+11. Expected time to solve it is 90 minutes.
+This exercise assesses the candidates' ability to design and implement an allocation system, considering preferences and availability. It aims to test their proficiency in object-oriented programming.
+
+
+
