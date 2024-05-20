@@ -1,0 +1,86 @@
+class Node:
+    def __init__(self, prev, next, value, key):
+        self.prev = prev
+        self.next = next
+        self.value = value
+        self.key = key
+    
+    def __str__(self):
+        return f"(Node val: {self.value})"
+
+class LRU:
+    def __init__(self, size):
+        self.node_dict = dict()
+        self.size = size
+        self.current_size = 0
+        self.head = None
+        self.end = None
+    
+    def update(self, key, value=None):
+        node = self.node_dict[key]
+        node.value = value
+        # print(node, key, node.prev, node.next)
+        if self.current_size > 1 and node.prev is not None:
+            prev_node = node.prev
+            next_node = node.next
+            prev_node.next = next_node
+            next_node.prev = prev_node
+            node.next = self.head
+            node.prev = None
+            self.head = node
+        self.node_dict[key] = node
+    
+    def put(self, key, value):
+        if key not in self.node_dict:
+            node = Node(prev=None, next=None, value=value, key=key)
+            if self.current_size == 0:
+                self.head = node
+                self.end = node
+                # self.current_size += 1
+                # self.node_dict[key] = node
+            else:
+                if self.current_size == self.size:
+                    del self.node_dict[self.end.key]
+                    self.end = self.end.prev
+                    self.end.next = None
+                    self.current_size -= 1
+                node.next = self.head
+                self.head.prev = node
+                self.head = node
+            self.current_size += 1
+            self.node_dict[key] = node
+        else:
+            self.update(key, value)
+    
+    def get(self, key):
+        if key in self.node_dict:
+            value = self.node_dict[key].value
+            self.update(key, value)
+        else:
+            print(f"Key {key} not present in cache.")
+    
+    def print_cache(self):
+        start = self.head
+        while start is not None:
+            print(f"{start}", end=" -> ")
+            start = start.next
+        print(" None")
+    
+
+if __name__ == "__main__":
+    lru = LRU(size=3)
+    lru.get(5)
+    lru.put(4,10)
+    lru.print_cache()
+    lru.put(3,11)
+    lru.print_cache()
+    lru.put(2,20)
+    lru.print_cache()
+    lru.put(1,100)
+    lru.print_cache()
+    lru.put(4,5)
+    lru.print_cache()
+    lru.put(4,10)
+    lru.print_cache()
+    lru.put(1, -200)
+    lru.print_cache()
